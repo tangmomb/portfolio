@@ -179,7 +179,7 @@ export default function Home() {
                           key={techIndex}
                           src={getTechLogo(tech)}
                           alt={tech}
-                          className="w-5 h-5"
+                          className="h-4.5 w-auto"
                           title={tech}
                         />
                       ))}

@@ -5,7 +5,7 @@
     "link": "https://example.com/projet1",
     "image": "https://picsum.photos/400/300?random=1",
     "category": "web",
-    "technologies": ["react", "nodejs", "webflow"]
+    "technologies": ["webflow"]
   },
   {
     "title": "Dashboard Analytics",
@@ -13,7 +13,7 @@
     "link": "https://example.com/dashboard",
     "image": "https://picsum.photos/400/300?random=2",
     "category": "data",
-    "technologies": ["python", "django", "chartjs"]
+    "technologies": ["python", "react", "javascript"]
   },
   {
     "title": "E-commerce Platform",
@@ -21,6 +21,6 @@
     "link": "https://example.com/ecommerce",
     "image": "https://picsum.photos/400/300?random=3",
     "category": "web",
-    "technologies": ["wordpress", "woocommerce"]
+    "technologies": ["wordpress", "nextjs"]
   }
 ]
