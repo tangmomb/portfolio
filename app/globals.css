@@ -159,35 +159,3 @@
 .section-border-animate {
   position: relative;
 }
-
-.section-border-animate::before,
-.section-border-animate::after {
-  content: '';
-  position: absolute;
-  background: rgb(85, 85, 85);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 10;
-}
-
-.section-border-animate::before {
-  width: 20px;
-  height: 2px;
-  top: 0;
-  left: 0;
-  animation: borderWalkTop 30s linear infinite;
-}
-
-.section-border-animate::after {
-  width: 2px;
-  height: 20px;
-  top: 0;
-  left: 0;
-  animation: borderWalkLeft 30s linear infinite;
-}
-
-.section-border-animate:hover::before,
-.section-border-animate:hover::after {
-  opacity: 1;
-}

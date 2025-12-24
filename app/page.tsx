@@ -4,12 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import videosData from "@/data/videos.json";
 import websitesData from "@/data/websites.json";
+import designsData from "@/data/designs.json";
+import photosData from "@/data/photos.json";
 import { getYouTubeThumbnail, getTechLogo } from "@/lib/youtube";
 import { useState } from "react";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedWebsiteCategory, setSelectedWebsiteCategory] = useState<string>("all");
+  const [selectedDesignCategory, setSelectedDesignCategory] = useState<string>("all");
+  const [selectedPhotoCategory, setSelectedPhotoCategory] = useState<string>("all");
+  const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
+  const [lightboxItem, setLightboxItem] = useState<{type: 'video' | 'design' | 'photo', data: any} | null>(null);
 
   const filteredVideos = selectedCategory === "all" 
     ? videosData 
@@ -18,6 +24,60 @@ export default function Home() {
   const filteredWebsites = selectedWebsiteCategory === "all"
     ? websitesData
     : websitesData.filter(project => project.category === selectedWebsiteCategory);
+
+  const filteredDesigns = selectedDesignCategory === "all"
+    ? designsData
+    : designsData.filter(design => design.category === selectedDesignCategory);
+
+  const filteredPhotos = selectedPhotoCategory === "all"
+    ? photosData
+    : photosData.filter(photo => photo.category === selectedPhotoCategory);
+
+  const openLightbox = (type: 'video' | 'design' | 'photo', data: any) => {
+    setLightboxItem({ type, data });
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    setLightboxItem(null);
+  };
+
+  const navigateLightbox = (direction: 'prev' | 'next') => {
+    if (!lightboxItem) return;
+
+    const { type, data } = lightboxItem;
+    let items: any[] = [];
+    let currentIndex = -1;
+
+    // Get items by type and category
+    if (type === 'video') {
+      items = filteredVideos;
+      currentIndex = items.findIndex(item => item.url === data.url);
+    } else if (type === 'design') {
+      items = filteredDesigns;
+      currentIndex = items.findIndex(item => item.image === data.image);
+    } else if (type === 'photo') {
+      items = filteredPhotos;
+      currentIndex = items.findIndex(item => item.image === data.image);
+    }
+
+    if (items.length === 0 || currentIndex === -1) return;
+
+    let newIndex;
+    if (direction === 'prev') {
+      newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+    } else {
+      newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+    }
+
+    setLightboxItem({ type, data: items[newIndex] });
+  };
+
+  const getYouTubeVideoId = (url: string) => {
+    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+    return match ? match[1] : null;
+  };
 
   return (
     <div className="min-h-screen">
@@ -133,34 +193,62 @@ export default function Home() {
             <p className="mt-4 text-lg text-muted-foreground">
               Mes créations graphiques.
             </p>
-            <div className="mt-16 grid max-w-4xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Design 1</CardTitle>
-                  <CardDescription>Description du design 1.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline">Voir le design</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Design 2</CardTitle>
-                  <CardDescription>Description du design 2.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline">Voir le design</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Design 3</CardTitle>
-                  <CardDescription>Description du design 3.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline">Voir le design</Button>
-                </CardContent>
-              </Card>
+            
+            {/* Filter Buttons */}
+            <div className="mt-8 flex flex-wrap gap-2 justify-center">
+              <Button 
+                variant={selectedDesignCategory === "all" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedDesignCategory("all")}
+              >
+                Tous
+              </Button>
+              <Button 
+                variant={selectedDesignCategory === "Entreprise" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedDesignCategory("Entreprise")}
+              >
+                Entreprise
+              </Button>
+              <Button 
+                variant={selectedDesignCategory === "Création" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedDesignCategory("Création")}
+              >
+                Création
+              </Button>
+              <Button 
+                variant={selectedDesignCategory === "Autre" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedDesignCategory("Autre")}
+              >
+                Autre
+              </Button>
+            </div>
+
+            <div className="mt-16 grid max-w-4xl grid-cols-3 gap-3 sm:gap-4 lg:mt-20 lg:grid-cols-6">
+              {filteredDesigns.map((design, index) => (
+                <Card 
+                  key={index} 
+                  className="w-full aspect-square p-2 cursor-pointer"
+                  onClick={() => openLightbox('design', design)}
+                >
+                  <CardContent className="p-0 h-full">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden">
+                      <img
+                        src={design.image}
+                        alt={`Design ${index + 1} - ${design.category}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
+                          Voir
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
@@ -207,9 +295,13 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="mt-16 grid max-w-4xl grid-cols-3 gap-3 sm:gap-4 lg:mt-20 lg:grid-cols-6">
+            <div className="mt-16 grid max-w-4xl grid-cols-6 gap-3 sm:gap-4 lg:mt-20">
               {filteredVideos.map((video, index) => (
-                <Card key={index} className="w-full aspect-square p-2">
+                <Card 
+                  key={index} 
+                  className="w-full aspect-[4/3] p-2 cursor-pointer"
+                  onClick={() => openLightbox('video', video)}
+                >
                   <CardContent className="p-0 h-full">
                     <div className="relative w-full h-full rounded-lg overflow-hidden">
                       <img
@@ -218,7 +310,7 @@ export default function Home() {
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                        <Button variant="outline" size="sm" className="bg-white/90 hover:bg-white text-xs">
+                        <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
                           Voir
                         </Button>
                       </div>
@@ -239,34 +331,62 @@ export default function Home() {
             <p className="mt-4 text-lg text-muted-foreground">
               Ma galerie photo.
             </p>
-            <div className="mt-16 grid max-w-4xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Photo 1</CardTitle>
-                  <CardDescription>Description de la photo 1.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline">Voir la photo</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Photo 2</CardTitle>
-                  <CardDescription>Description de la photo 2.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline">Voir la photo</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Photo 3</CardTitle>
-                  <CardDescription>Description de la photo 3.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline">Voir la photo</Button>
-                </CardContent>
-              </Card>
+            
+            {/* Filter Buttons */}
+            <div className="mt-8 flex flex-wrap gap-2 justify-center">
+              <Button 
+                variant={selectedPhotoCategory === "all" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedPhotoCategory("all")}
+              >
+                Toutes
+              </Button>
+              <Button 
+                variant={selectedPhotoCategory === "Paysage" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedPhotoCategory("Paysage")}
+              >
+                Paysage
+              </Button>
+              <Button 
+                variant={selectedPhotoCategory === "Évènement" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedPhotoCategory("Évènement")}
+              >
+                Évènement
+              </Button>
+              <Button 
+                variant={selectedPhotoCategory === "Autre" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedPhotoCategory("Autre")}
+              >
+                Autre
+              </Button>
+            </div>
+
+            <div className="mt-16 grid max-w-4xl grid-cols-3 gap-3 sm:gap-4 lg:mt-20 lg:grid-cols-6">
+              {filteredPhotos.map((photo, index) => (
+                <Card 
+                  key={index} 
+                  className="w-full aspect-square p-2 cursor-pointer"
+                  onClick={() => openLightbox('photo', photo)}
+                >
+                  <CardContent className="p-0 h-full">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden">
+                      <img
+                        src={photo.image}
+                        alt={`Photo ${index + 1} - ${photo.category}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
+                          Voir
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
@@ -294,6 +414,68 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      {lightboxOpen && lightboxItem && (
+        <div 
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          <div className="relative max-w-4xl max-h-full flex items-center">
+            {/* Previous button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigateLightbox('prev');
+              }}
+              className="absolute -left-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-4xl font-bold z-10"
+            >
+              ‹
+            </button>
+
+            {/* Close button */}
+            <button
+              onClick={closeLightbox}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 text-2xl font-bold"
+            >
+              ✕
+            </button>
+            
+            <div className="relative">
+              {lightboxItem.type === 'video' && (
+                <div className="w-[900px] aspect-video">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(lightboxItem.data.url)}`}
+                    className="w-full h-full rounded-lg"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              )}
+              
+              {(lightboxItem.type === 'design' || lightboxItem.type === 'photo') && (
+                <img
+                  src={lightboxItem.data.image}
+                  alt={`${lightboxItem.type} - ${lightboxItem.data.category}`}
+                  className="max-w-full max-h-full object-contain rounded-lg"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
+            </div>
+
+            {/* Next button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigateLightbox('next');
+              }}
+              className="absolute -right-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-4xl font-bold z-10"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="border-t py-6 md:px-8 md:py-0">
