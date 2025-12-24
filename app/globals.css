@@ -124,34 +124,70 @@
     scroll-behavior: smooth;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    left: calc(50vw - 600px);
-    top: 0;
-    width: 2px;
-    height: 100vh;
-    background: repeating-linear-gradient(to bottom, transparent, transparent 20px, var(--border) 20px, var(--border) 40px);
-    background-size: 2px 40px;
-    animation: dash-move 20s linear infinite;
-    z-index: 10;
+  section {
+    position: relative;
   }
+}
 
-  body::after {
-    content: '';
-    position: fixed;
-    left: calc(50vw + 600px);
-    top: 0;
-    width: 2px;
-    height: 100vh;
-    background: repeating-linear-gradient(to bottom, transparent, transparent 20px, var(--border) 20px, var(--border) 40px);
-    background-size: 2px 40px;
-    animation: dash-move 20s linear infinite;
-    z-index: 10;
+@keyframes borderWalkTop {
+  0% {
+    left: 0;
   }
+  100% {
+    left: calc(100% - 20px);
+  }
+}
 
-  @keyframes dash-move {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 40px; }
+@keyframes borderWalkLeft {
+  0% {
+    top: 0;
   }
+  100% {
+    top: calc(100% - 20px);
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.section-border-animate {
+  position: relative;
+}
+
+.section-border-animate::before,
+.section-border-animate::after {
+  content: '';
+  position: absolute;
+  background: rgb(85, 85, 85);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.section-border-animate::before {
+  width: 20px;
+  height: 2px;
+  top: 0;
+  left: 0;
+  animation: borderWalkTop 30s linear infinite;
+}
+
+.section-border-animate::after {
+  width: 2px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  animation: borderWalkLeft 30s linear infinite;
+}
+
+.section-border-animate:hover::before,
+.section-border-animate:hover::after {
+  opacity: 1;
 }
