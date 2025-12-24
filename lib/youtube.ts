@@ -18,7 +18,7 @@ export function getYouTubeVideoId(url: string): string | null {
 
 export function getYouTubeThumbnail(url: string): string {
   const videoId = getYouTubeVideoId(url);
-  return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
+  return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
 }
 
 export function getTechLogo(tech: string): string {

@@ -9,6 +9,18 @@ import photosData from "@/data/photos.json";
 import { getYouTubeThumbnail, getTechLogo } from "@/lib/youtube";
 import { useState } from "react";
 
+// Fonction de scroll simplifiée avec scrollIntoView natif
+const scrollToSection = (elementId: string) => {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+
+  element.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+    inline: 'nearest'
+  });
+};
+
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedWebsiteCategory, setSelectedWebsiteCategory] = useState<string>("all");
@@ -92,17 +104,17 @@ export default function Home() {
               En quoi puis-je vous aider ?
             </p>
             <div className="mt-10 flex items-center justify-start gap-x-6">
-              <Button size="lg" variant="outline" asChild>
-                <a href="#websites">Développement</a>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection('websites')}>
+                Développement
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href="#graphic">Graphisme</a>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection('graphic')}>
+                Graphisme
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href="#videos">Vidéos</a>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection('videos')}>
+                Vidéos
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href="#photos">Photos</a>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection('photos')}>
+                Photos
               </Button>
             </div>
           </div>
@@ -160,8 +172,8 @@ export default function Home() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="pt-[3px]">
-                    <div className="flex items-center gap-1 mb-4 border border-gray-600 rounded-md p-2">
-                      <span className="text-xs text-muted-foreground mr-2">Technos:</span>
+                    <div className="flex items-center gap-1 mb-4 p-2">
+                      <span className="text-xs text-white mr-2">Technos:</span>
                       {project.technologies.map((tech, techIndex) => (
                         <img
                           key={techIndex}
