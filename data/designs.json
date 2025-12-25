@@ -1,50 +1,6 @@
 [
   {
-    "image": "js.png",
-    "category": "Entreprise"
-  },
-  {
-    "image": "js.png",
-    "category": "Création"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
-  },
-  {
-    "image": "js.png",
-    "category": "Entreprise"
-  },
-  {
-    "image": "js.png",
-    "category": "Création"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
-  },
-  {
-    "image": "js.png",
-    "category": "Entreprise"
-  },
-  {
-    "image": "js.png",
-    "category": "Création"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
-  },
-  {
-    "image": "js.png",
-    "category": "Entreprise"
-  },
-  {
-    "image": "js.png",
-    "category": "Création"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
+    "image": "bleu,jpg",
+    "category": "entreprise"
   }
 ]
