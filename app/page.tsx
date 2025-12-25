@@ -551,7 +551,7 @@ export default function Home() {
               )}
               
               {(lightboxItem.type === 'design' || lightboxItem.type === 'photo') && (
-                <div className="relative w-full max-h-[70vh] md:max-h-[80vh] aspect-square md:aspect-auto">
+                <div className="relative w-full h-[70vh] md:h-[80vh]">
                   <Image
                     src={`/images/${lightboxItem.data.image}`}
                     alt={`${lightboxItem.type} - ${lightboxItem.data.category}`}
