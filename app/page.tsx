@@ -116,16 +116,16 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section id="home" className="border-b border-l-2 border-r-2 border-border">
-        <div className="mx-auto w-[1200px] border-l-2 border-r-2 border-border text-left py-24 px-4 section-border-animate">
+      <section id="home" className="border-b md:border-l-2 md:border-r-2 border-border">
+        <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight md:sm:text-6xl">
               Bonjour
             </h1>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground">
+            <p className="mt-4 md:mt-6 text-base md:text-lg leading-7 md:leading-8 text-muted-foreground">
               En quoi puis-je vous aider ?
             </p>
-            <div className="mt-10 flex items-center justify-start gap-x-6">
+            <div className="mt-6 md:mt-10 flex flex-wrap items-center justify-start gap-2 md:gap-x-6">
               <Button size="lg" variant="outline" onClick={() => scrollToSection('websites')}>
                 Développement
               </Button>
@@ -144,22 +144,22 @@ export default function Home() {
       </section>
 
       {/* Websites Section */}
-      <section id="websites" className="border-b border-l-2 border-r-2 border-border">
-        <div className="mx-auto w-[1200px] border-l-2 border-r-2 border-border text-left py-24 px-4 section-border-animate">
+      <section id="websites" className="border-b md:border-l-2 md:border-r-2 border-border">
+        <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Développement</h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl">Développement</h2>
+            <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground">
               Mes projets data / web.
             </p>
             
             {(() => {
               const highlights = websitesData.filter(project => project.highlight === "oui");
               return highlights.length > 0 ? (
-                <div className="mt-8 flex gap-4 justify-center max-w-4xl overflow-x-auto">
+                <div className="mt-6 md:mt-8 flex gap-3 md:gap-4 justify-start md:justify-center max-w-4xl overflow-x-auto pb-2">
                   {highlights.map((project, index) => (
                     <Card 
                       key={`highlight-${index}`} 
-                      className="w-[220px] cursor-pointer py-0 gap-1"
+                      className="w-[180px] md:w-[211px] flex-shrink-0 cursor-pointer py-0 gap-1"
                       onClick={() => window.open(project.link, '_blank')}
                     >
                       <CardContent className="p-2">
@@ -200,7 +200,7 @@ export default function Home() {
             })()}
             
             {/* Filter Buttons */}
-            <div className="mt-20 flex flex-wrap gap-2 justify-center">
+            <div className="mt-12 md:mt-20 flex flex-wrap gap-2 justify-center">
               <Button 
                 variant={selectedWebsiteCategory === "all" ? "default" : "outline"} 
                 size="sm"
@@ -224,11 +224,11 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="mt-16 lg:mt-20">
+            <div className="mt-10 md:mt-16 lg:mt-20">
               {(() => {
                 const others = filteredWebsites.filter(project => project.highlight !== "oui");
                 return others.length > 0 ? (
-                  <div className="grid max-w-4xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+                  <div className="grid max-w-4xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
                     {others.map((project, index) => (
                       <Card 
                         key={`other-${index}`} 
@@ -273,16 +273,16 @@ export default function Home() {
       </section>
 
       {/* Graphic Design Section */}
-      <section id="graphic" className="border-b border-l-2 border-r-2 border-border">
-        <div className="mx-auto w-[1200px] border-l-2 border-r-2 border-border text-left py-24 px-4 section-border-animate">
+      <section id="graphic" className="border-b md:border-l-2 md:border-r-2 border-border">
+        <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Graphisme</h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl">Graphisme</h2>
+            <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground">
               Mes créations graphiques.
             </p>
             
             {/* Filter Buttons */}
-            <div className="mt-8 flex flex-wrap gap-2 justify-center">
+            <div className="mt-6 md:mt-8 flex flex-wrap gap-2 justify-center">
               <Button 
                 variant={selectedDesignCategory === "all" ? "default" : "outline"} 
                 size="sm"
@@ -343,16 +343,16 @@ export default function Home() {
       </section>
 
       {/* Videos Section */}
-      <section id="videos" className="border-b border-l-2 border-r-2 border-border">
-        <div className="mx-auto w-[1200px] border-l-2 border-r-2 border-border text-left py-24 px-4 section-border-animate">
+      <section id="videos" className="border-b md:border-l-2 md:border-r-2 border-border">
+        <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Vidéos</h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl">Vidéos</h2>
+            <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground">
               Tournage et montage seul.
             </p>
             
             {/* Filter Buttons */}
-            <div className="mt-8 flex flex-wrap gap-2 justify-center">
+            <div className="mt-6 md:mt-8 flex flex-wrap gap-2 justify-center">
               <Button 
                 variant={selectedCategory === "all" ? "default" : "outline"} 
                 size="sm"
@@ -390,7 +390,7 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="mt-16 grid max-w-4xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:mt-20">
+            <div className="mt-10 md:mt-16 grid max-w-4xl grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:mt-20">
               {filteredVideos.map((video, index) => (
                 <Card 
                   key={index} 
@@ -420,16 +420,16 @@ export default function Home() {
       </section>
 
       {/* Photos Section */}
-      <section id="photos" className="border-b border-l-2 border-r-2 border-border">
-        <div className="mx-auto w-[1200px] border-l-2 border-r-2 border-border text-left py-24 px-4 section-border-animate">
+      <section id="photos" className="border-b md:border-l-2 md:border-r-2 border-border">
+        <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Photos</h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl">Photos</h2>
+            <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground">
               Ma galerie photo.
             </p>
             
             {/* Filter Buttons */}
-            <div className="mt-8 flex flex-wrap gap-2 justify-center">
+            <div className="mt-6 md:mt-8 flex flex-wrap gap-2 justify-center">
               <Button 
                 variant={selectedPhotoCategory === "all" ? "default" : "outline"} 
                 size="sm"
@@ -490,11 +490,11 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="border-b border-l-2 border-r-2 border-border">
-        <div className="mx-auto w-[1200px] border-l-2 border-r-2 border-border text-left py-24 px-4 section-border-animate">
+      <section id="contact" className="border-b md:border-l-2 md:border-r-2 border-border">
+        <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Contact</h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl">Contact</h2>
+            <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground">
               N'hésitez pas à me contacter pour discuter de vos projets.
             </p>
             <div className="mt-8 space-y-4">
@@ -515,17 +515,17 @@ export default function Home() {
       {/* Lightbox */}
       {lightboxOpen && lightboxItem && (
         <div 
-          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-2 md:p-4"
           onClick={closeLightbox}
         >
-          <div className="relative max-w-4xl max-h-full flex items-center">
+          <div className="relative w-full max-w-4xl max-h-full flex items-center">
             {/* Previous button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 navigateLightbox('prev');
               }}
-              className="absolute -left-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-4xl font-bold z-10"
+              className="absolute left-2 md:-left-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-3xl md:text-4xl font-bold z-10 bg-black/50 md:bg-transparent w-10 h-10 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
             >
               ‹
             </button>
@@ -533,14 +533,14 @@ export default function Home() {
             {/* Close button */}
             <button
               onClick={closeLightbox}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 text-2xl font-bold"
+              className="absolute top-2 md:-top-12 right-2 md:right-0 text-white hover:text-gray-300 text-xl md:text-2xl font-bold z-10 bg-black/50 md:bg-transparent w-8 h-8 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
             >
               ✕
             </button>
             
-            <div className="relative">
+            <div className="relative w-full w-full px-12 md:px-0">
               {lightboxItem.type === 'video' && (
-                <div className="w-[900px] aspect-video">
+                <div className="w-full md:w-[900px] aspect-video mx-auto">
                   <iframe
                     src={getEmbedUrl(lightboxItem.data.url)}
                     className="w-full h-full rounded-lg"
@@ -551,13 +551,15 @@ export default function Home() {
               )}
               
               {(lightboxItem.type === 'design' || lightboxItem.type === 'photo') && (
-                <Image
-                  src={`/images/${lightboxItem.data.image}`}
-                  alt={`${lightboxItem.type} - ${lightboxItem.data.category}`}
-                  fill
-                  className="object-contain rounded-lg"
-                  onClick={(e) => e.stopPropagation()}
-                />
+                <div className="relative w-full max-h-[70vh] md:max-h-[80vh] aspect-square md:aspect-auto">
+                  <Image
+                    src={`/images/${lightboxItem.data.image}`}
+                    alt={`${lightboxItem.type} - ${lightboxItem.data.category}`}
+                    fill
+                    className="object-contain rounded-lg"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </div>
               )}
             </div>
 
@@ -567,7 +569,7 @@ export default function Home() {
                 e.stopPropagation();
                 navigateLightbox('next');
               }}
-              className="absolute -right-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-4xl font-bold z-10"
+              className="absolute right-2 md:-right-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-3xl md:text-4xl font-bold z-10 bg-black/50 md:bg-transparent w-10 h-10 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
             >
               ›
             </button>
