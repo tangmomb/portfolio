@@ -1,26 +1,24 @@
 [
   {
-    "title": "Projet Web 1",
-    "description": "Application web moderne développée avec React et Node.js pour la gestion de données clients.",
-    "link": "https://example.com/projet1",
-    "image": "https://picsum.photos/400/300?random=1",
+    "title": "projet 1",
+    "description": "desc 1",
+    "link": "a.com",
     "category": "web",
-    "technologies": ["webflow"]
+    "technologies": [
+      "react",
+      "webflow"
+    ],
+    "image": "js.png"
   },
   {
-    "title": "Dashboard Analytics",
-    "description": "Tableau de bord interactif pour l'analyse de données en temps réel avec visualisation avancée.",
-    "link": "https://example.com/dashboard",
-    "image": "https://picsum.photos/400/300?random=2",
+    "title": "projet 2",
+    "description": "desc 2",
+    "link": "a.com",
     "category": "data",
-    "technologies": ["python", "react", "javascript"]
-  },
-  {
-    "title": "E-commerce Platform",
-    "description": "Plateforme de commerce électronique complète avec paiement intégré et gestion des stocks.",
-    "link": "https://example.com/ecommerce",
-    "image": "https://picsum.photos/400/300?random=3",
-    "category": "web",
-    "technologies": ["wordpress", "nextjs"]
+    "technologies": [
+      "wordpress",
+      "recat"
+    ],
+    "image": "js.png"
   }
 ]

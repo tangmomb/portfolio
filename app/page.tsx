@@ -6,8 +6,9 @@ import videosData from "@/data/videos.json";
 import websitesData from "@/data/websites.json";
 import designsData from "@/data/designs.json";
 import photosData from "@/data/photos.json";
-import { getYouTubeThumbnail, getTechLogo } from "@/lib/youtube";
+import { getYouTubeThumbnail } from "@/lib/youtube";
 import { useState } from "react";
+import Image from 'next/image';
 
 // Fonction de scroll simplifiée avec scrollIntoView natif
 const scrollToSection = (elementId: string) => {
@@ -91,6 +92,27 @@ export default function Home() {
     return match ? match[1] : null;
   };
 
+  const getVimeoVideoId = (url: string) => {
+    const match = url.match(/(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/);
+    return match ? match[1] : null;
+  };
+
+  const getVideoId = (url: string) => {
+    return getYouTubeVideoId(url) || getVimeoVideoId(url);
+  };
+
+  const getEmbedUrl = (url: string) => {
+    const youtubeId = getYouTubeVideoId(url);
+    if (youtubeId) {
+      return `https://www.youtube.com/embed/${youtubeId}`;
+    }
+    const vimeoId = getVimeoVideoId(url);
+    if (vimeoId) {
+      return `https://player.vimeo.com/video/${vimeoId}`;
+    }
+    return '';
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -158,11 +180,12 @@ export default function Home() {
             <div className="mt-16 grid max-w-4xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:grid-cols-3">
               {filteredWebsites.map((project, index) => (
                 <Card key={index} className="overflow-hidden">
-                  <div className="aspect-[4/3] overflow-hidden p-1">
-                    <img
-                      src={project.image}
+                  <div className="aspect-[4/3] overflow-hidden p-1 relative">
+                    <Image
+                      src={`/images/${project.image}`}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform hover:scale-105 rounded-lg"
+                      fill
+                      className="object-cover transition-transform hover:scale-105 rounded-lg"
                     />
                   </div>
                   <CardHeader>
@@ -175,13 +198,13 @@ export default function Home() {
                     <div className="flex items-center gap-1 mb-4 p-2">
                       <span className="text-xs text-white mr-2">Technos:</span>
                       {project.technologies.map((tech, techIndex) => (
-                        <img
+                        <span
                           key={techIndex}
-                          src={getTechLogo(tech)}
-                          alt={tech}
-                          className="h-4.5 w-auto"
+                          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border border-input bg-transparent text-foreground pb-2"
                           title={tech}
-                        />
+                        >
+                          {tech}
+                        </span>
                       ))}
                     </div>
                     <Button variant="outline" asChild>
@@ -247,10 +270,11 @@ export default function Home() {
                 >
                   <CardContent className="p-0 h-full">
                     <div className="relative w-full h-full rounded-lg overflow-hidden">
-                      <img
-                        src={design.image}
+                      <Image
+                        src={`/images/${design.image}`}
                         alt={`Design ${index + 1} - ${design.category}`}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                         <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
@@ -299,6 +323,13 @@ export default function Home() {
                 Évènementiel
               </Button>
               <Button 
+                variant={selectedCategory === "motion design" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedCategory("motion design")}
+              >
+                Motion Design
+              </Button>
+              <Button 
                 variant={selectedCategory === "autre" ? "default" : "outline"} 
                 size="sm"
                 onClick={() => setSelectedCategory("autre")}
@@ -316,10 +347,11 @@ export default function Home() {
                 >
                   <CardContent className="p-0 h-full">
                     <div className="relative w-full h-full rounded-lg overflow-hidden">
-                      <img
+                      <Image
                         src={getYouTubeThumbnail(video.url)}
                         alt={`Vidéo ${index + 1} - ${video.category}`}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                         <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
@@ -385,10 +417,11 @@ export default function Home() {
                 >
                   <CardContent className="p-0 h-full">
                     <div className="relative w-full h-full rounded-lg overflow-hidden">
-                      <img
-                        src={photo.image}
+                      <Image
+                        src={`/images/${photo.image}`}
                         alt={`Photo ${index + 1} - ${photo.category}`}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                         <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
@@ -457,7 +490,7 @@ export default function Home() {
               {lightboxItem.type === 'video' && (
                 <div className="w-[900px] aspect-video">
                   <iframe
-                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(lightboxItem.data.url)}`}
+                    src={getEmbedUrl(lightboxItem.data.url)}
                     className="w-full h-full rounded-lg"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -466,10 +499,11 @@ export default function Home() {
               )}
               
               {(lightboxItem.type === 'design' || lightboxItem.type === 'photo') && (
-                <img
-                  src={lightboxItem.data.image}
+                <Image
+                  src={`/images/${lightboxItem.data.image}`}
                   alt={`${lightboxItem.type} - ${lightboxItem.data.category}`}
-                  className="max-w-full max-h-full object-contain rounded-lg"
+                  fill
+                  className="object-contain rounded-lg"
                   onClick={(e) => e.stopPropagation()}
                 />
               )}
