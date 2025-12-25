@@ -1,25 +1,27 @@
 [
   {
     "title": "projet 1",
-    "description": "desc 1",
+    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.1",
     "link": "a.com",
     "category": "web",
     "technologies": [
       "react",
       "webflow"
     ],
-    "image": "wordpress.svg"
+    "image": "bug.png",
+    "highlight": "oui"
   },
   {
     "title": "projet 2",
-    "description": "desc 2",
+    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.2",
     "link": "a.com",
     "category": "data",
     "technologies": [
       "wordpress",
       "recat"
     ],
-    "image": "js.png"
+    "image": "js.png",
+    "highlight": "oui"
   },
   {
     "title": "bug",
@@ -29,6 +31,42 @@
     "technologies": [
       "bug"
     ],
-    "image": "bug.png"
+    "image": "bug.png",
+    "highlight": "non"
+  },
+  {
+    "title": "projet 1",
+    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.1",
+    "link": "a.com",
+    "category": "web",
+    "technologies": [
+      "react",
+      "webflow"
+    ],
+    "image": "bug.png",
+    "highlight": "oui"
+  },
+  {
+    "title": "projet 2",
+    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.2 ajhazjsh auhauihd auhuihdai",
+    "link": "a.com",
+    "category": "data",
+    "technologies": [
+      "wordpress",
+      "recat"
+    ],
+    "image": "js.png",
+    "highlight": "oui"
+  },
+  {
+    "title": "bug",
+    "description": "bug",
+    "link": "bug",
+    "category": "web",
+    "technologies": [
+      "bug"
+    ],
+    "image": "bug.png",
+    "highlight": "non"
   }
 ]

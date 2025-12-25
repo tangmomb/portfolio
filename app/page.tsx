@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import videosData from "@/data/videos.json";
 import websitesData from "@/data/websites.json";
 import designsData from "@/data/designs.json";
@@ -152,8 +152,55 @@ export default function Home() {
               Mes projets data / web.
             </p>
             
+            {(() => {
+              const highlights = websitesData.filter(project => project.highlight === "oui");
+              return highlights.length > 0 ? (
+                <div className="mt-8 flex gap-4 justify-center max-w-4xl overflow-x-auto">
+                  {highlights.map((project, index) => (
+                    <Card 
+                      key={`highlight-${index}`} 
+                      className="w-[220px] cursor-pointer py-0 gap-1"
+                      onClick={() => window.open(project.link, '_blank')}
+                    >
+                      <CardContent className="p-2">
+                        <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden mb-2">
+                          <Image
+                            src={`/images/${project.image}`}
+                            alt={`Projet ${index + 1} - ${project.category}`}
+                            fill
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
+                              Voir
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="pl-2 gap-2 flex flex-col">
+                          <h3 className="text-sm font-semibold">{project.title}</h3>
+                          <p className="text-xs text-muted-foreground mb-2">{project.description}</p>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="pt-0 pl-3 mb-4">
+                        <div className="flex flex-wrap gap-1 w-full">
+                          {project.technologies.map((tech, techIndex) => (
+                            <span
+                              key={techIndex}
+                              className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border border-input bg-transparent text-foreground"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              ) : null;
+            })()}
+            
             {/* Filter Buttons */}
-            <div className="mt-8 flex flex-wrap gap-2 justify-center">
+            <div className="mt-20 flex flex-wrap gap-2 justify-center">
               <Button 
                 variant={selectedWebsiteCategory === "all" ? "default" : "outline"} 
                 size="sm"
@@ -177,44 +224,49 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="mt-16 grid max-w-4xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:grid-cols-3">
-              {filteredWebsites.map((project, index) => (
-                <Card key={index} className="overflow-hidden">
-                  <div className="aspect-[4/3] overflow-hidden p-1 relative">
-                    <Image
-                      src={`/images/${project.image}`}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform hover:scale-105 rounded-lg"
-                    />
+            <div className="mt-16 lg:mt-20">
+              {(() => {
+                const others = filteredWebsites.filter(project => project.highlight !== "oui");
+                return others.length > 0 ? (
+                  <div className="grid max-w-4xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+                    {others.map((project, index) => (
+                      <Card 
+                        key={`other-${index}`} 
+                        className="w-full aspect-[4/3] p-2 cursor-pointer gap-2"
+                        onClick={() => window.open(project.link, '_blank')}
+                      >
+                        <CardContent className="p-0 h-full">
+                          <div className="relative w-full h-full rounded-lg overflow-hidden">
+                            <Image
+                              src={`/images/${project.image}`}
+                              alt={`Projet ${index + 1} - ${project.category}`}
+                              fill
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                              <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
+                                Voir
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="p-2 pt-0 mt-2 pb-1">
+                          <div className="flex flex-wrap gap-1 w-full">
+                            {project.technologies.map((tech, techIndex) => (
+                              <span
+                                key={techIndex}
+                                className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border border-input bg-transparent text-foreground"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    ))}
                   </div>
-                  <CardHeader>
-                    <CardTitle className="text-xl">{project.title}</CardTitle>
-                    <CardDescription className="text-sm leading-relaxed">
-                      {project.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-[3px]">
-                    <div className="flex items-center gap-1 mb-4 p-2">
-                      <span className="text-xs text-white mr-2">Technos:</span>
-                      {project.technologies.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border border-input bg-transparent text-foreground pb-2"
-                          title={tech}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <Button variant="outline" asChild>
-                      <a href={project.link} target="_blank" rel="noopener noreferrer">
-                        Voir le projet
-                      </a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+                ) : null;
+              })()}
             </div>
           </div>
         </div>
@@ -338,7 +390,7 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="mt-16 grid max-w-4xl grid-cols-6 gap-3 sm:gap-4 lg:mt-20">
+            <div className="mt-16 grid max-w-4xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:mt-20">
               {filteredVideos.map((video, index) => (
                 <Card 
                   key={index} 

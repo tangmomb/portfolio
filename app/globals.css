@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source "../*.{ts,tsx,js,jsx}";
+/* OU mieux pour scanner tout le projet depuis la racine */
+@source "../**/*.{ts,tsx,js,jsx}";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
