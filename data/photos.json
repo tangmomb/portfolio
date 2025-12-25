@@ -1,50 +1,6 @@
 [
   {
-    "image": "js.png",
-    "category": "Paysage"
-  },
-  {
-    "image": "js.png",
-    "category": "Évènement"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
-  },
-  {
-    "image": "js.png",
-    "category": "Paysage"
-  },
-  {
-    "image": "js.png",
-    "category": "Évènement"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
-  },
-  {
-    "image": "js.png",
-    "category": "Paysage"
-  },
-  {
-    "image": "js.png",
-    "category": "Évènement"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
-  },
-  {
-    "image": "js.png",
-    "category": "Paysage"
-  },
-  {
-    "image": "js.png",
-    "category": "Évènement"
-  },
-  {
-    "image": "js.png",
-    "category": "Autre"
+    "image": "bleu,jpg",
+    "category": "entreprise"
   }
 ]
