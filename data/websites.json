@@ -8,7 +8,7 @@
       "react",
       "webflow"
     ],
-    "image": "js.png"
+    "image": "wordpress.svg"
   },
   {
     "title": "projet 2",
@@ -20,5 +20,15 @@
       "recat"
     ],
     "image": "js.png"
+  },
+  {
+    "title": "bug",
+    "description": "bug",
+    "link": "bug",
+    "category": "bug",
+    "technologies": [
+      "bug"
+    ],
+    "image": "bug.png"
   }
 ]
