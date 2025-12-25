@@ -50,4 +50,3 @@ node_modules/
 .env.production
 .env.development
 .vercel/
-data/
