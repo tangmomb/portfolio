@@ -20,5 +20,27 @@
       "recat"
     ],
     "image": "js.png"
+  },
+  {
+    "title": "projet 1",
+    "description": "desc 1",
+    "link": "a.com",
+    "category": "web",
+    "technologies": [
+      "react",
+      "webflow"
+    ],
+    "image": "wordpress.svg"
+  },
+  {
+    "title": "projet 2",
+    "description": "desc 2",
+    "link": "a.com",
+    "category": "data",
+    "technologies": [
+      "wordpress",
+      "recat"
+    ],
+    "image": "js.png"
   }
 ]
