@@ -1,37 +1,56 @@
 [
   {
-    "title": "projet 1",
-    "description": "desc 1",
-    "link": "a.com",
-    "category": "web",
+    "title": "Tennis Winner",
+    "description": "Qui a gagné les derniers tournois majeurs ?",
+    "link": "https://tennisgsolympicsscores-cmxidknbazy5swry5voadm.streamlit.app/",
+    "category": "data",
     "technologies": [
-      "react",
-      "webflow"
+      "Python"
     ],
-    "image": "bleu.jpg",
+    "image": "tennisstats.png",
     "highlight": "oui"
   },
   {
-    "title": "projet 2",
-    "description": "desc 2",
-    "link": "a.com",
-    "category": "data",
+    "title": "Ce portfolio",
+    "description": "Le site tourne sur NextJS via le repos GitHub, que n8n alimente quand les fichiers Google Drive sont mis à jour.",
+    "link": "#",
+    "category": "web",
     "technologies": [
-      "wordpress",
-      "recat"
+      "NextJS",
+      "n8n"
     ],
-    "image": "bleu.jpg",
-    "highlight": "non"
+    "image": "portfolio.png",
+    "highlight": "oui"
   },
   {
-    "title": "bug",
-    "description": "bug",
-    "link": "bug",
-    "category": "bug",
+    "title": "GitHub",
+    "description": "Consultez mon GitHub pour d'autres projets !",
+    "link": "https://github.com/tangmomb",
+    "category": "all",
     "technologies": [
-      "bug"
+      "GitHub"
     ],
-    "image": "bug.png",
+    "image": "github.png",
+    "highlight": "oui"
+  },
+  {
+    "title": "Geocom Networks",
+    "description": "Un site complet réalisé sur Webflow",
+    "link": "https://www.geocom-networks.com/",
+    "category": "web",
+    "technologies": [
+      "Webflow"
+    ],
+    "image": "geocom.png",
+    "highlight": "oui"
+  },
+  {
+    "title": "Cavanine",
+    "description": "",
+    "link": "",
+    "category": "",
+    "technologies": [],
+    "image": "cavanine.png",
     "highlight": "non"
   }
 ]
