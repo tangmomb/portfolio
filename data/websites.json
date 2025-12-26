@@ -23,17 +23,6 @@
     "highlight": "oui"
   },
   {
-    "title": "GitHub",
-    "description": "Consultez mon GitHub pour d'autres projets !",
-    "link": "https://github.com/tangmomb",
-    "category": "all",
-    "technologies": [
-      "GitHub"
-    ],
-    "image": "github.png",
-    "highlight": "oui"
-  },
-  {
     "title": "Geocom Networks",
     "description": "Un site complet réalisé sur Webflow",
     "link": "https://www.geocom-networks.com/",
@@ -45,10 +34,21 @@
     "highlight": "oui"
   },
   {
+    "title": "GitHub",
+    "description": "Consultez mon GitHub pour d'autres projets !",
+    "link": "https://github.com/tangmomb",
+    "category": "all",
+    "technologies": [
+      "GitHub"
+    ],
+    "image": "github.png",
+    "highlight": "oui"
+  },
+  {
     "title": "Cavanine",
     "description": "",
     "link": "",
-    "category": "",
+    "category": "web",
     "technologies": [
       "WordPress"
     ],
