@@ -438,23 +438,37 @@ export default function Home() {
                 Toutes
               </Button>
               <Button 
-                variant={selectedPhotoCategory === "Paysage" ? "default" : "outline"} 
+                variant={selectedPhotoCategory === "paysage" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setSelectedPhotoCategory("Paysage")}
+                onClick={() => setSelectedPhotoCategory("paysage")}
               >
                 Paysage
               </Button>
               <Button 
-                variant={selectedPhotoCategory === "Évènement" ? "default" : "outline"} 
+                variant={selectedPhotoCategory === "portrait" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setSelectedPhotoCategory("Évènement")}
+                onClick={() => setSelectedPhotoCategory("portrait")}
               >
-                Évènement
+                Portrait
               </Button>
               <Button 
-                variant={selectedPhotoCategory === "Autre" ? "default" : "outline"} 
+                variant={selectedPhotoCategory === "évènement" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setSelectedPhotoCategory("Autre")}
+                onClick={() => setSelectedPhotoCategory("évènement")}
+              >
+                Évènementiel
+              </Button>
+              <Button 
+                variant={selectedPhotoCategory === "pub" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedPhotoCategory("pub")}
+              >
+                Pub
+              </Button>
+              <Button 
+                variant={selectedPhotoCategory === "autre" ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setSelectedPhotoCategory("autre")}
               >
                 Autre
               </Button>

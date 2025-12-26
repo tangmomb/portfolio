@@ -6,6 +6,7 @@
 @source "../**/*.{ts,tsx,js,jsx}";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant hover (&:hover);
 
 @theme inline {
   --color-background: var(--background);
@@ -136,6 +137,11 @@
   /* Animation pour les sections ciblées par les ancres */
   section:target {
     animation: sectionHighlight 1s ease-in-out;
+  }
+
+  /* Force hover states for Edge compatibility */
+  button {
+    transition: background-color 200ms ease-in-out, color 200ms ease-in-out, opacity 200ms ease-in-out;
   }
 }
 
