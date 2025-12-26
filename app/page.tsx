@@ -29,6 +29,7 @@ export default function Home() {
   const [selectedPhotoCategory, setSelectedPhotoCategory] = useState<string>("all");
   const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
   const [lightboxItem, setLightboxItem] = useState<{type: 'video' | 'design' | 'photo', data: any} | null>(null);
+  const [imageDimensions, setImageDimensions] = useState<{width: number, height: number} | null>(null);
 
   const filteredVideos = selectedCategory === "all" 
     ? videosData 
@@ -49,11 +50,23 @@ export default function Home() {
   const openLightbox = (type: 'video' | 'design' | 'photo', data: any) => {
     setLightboxItem({ type, data });
     setLightboxOpen(true);
+    
+    // Load image dimensions for design and photo types
+    if (type === 'design' || type === 'photo') {
+      const img = new window.Image();
+      img.onload = () => {
+        setImageDimensions({ width: img.width, height: img.height });
+      };
+      img.src = `/images/${data.image}`;
+    } else {
+      setImageDimensions(null);
+    }
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
     setLightboxItem(null);
+    setImageDimensions(null);
   };
 
   const navigateLightbox = (direction: 'prev' | 'next') => {
@@ -84,7 +97,23 @@ export default function Home() {
       newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
     }
 
-    setLightboxItem({ type, data: items[newIndex] });
+    const newData = items[newIndex];
+    
+    // Reset dimensions first to avoid zoom effect
+    if (type === 'design' || type === 'photo') {
+      setImageDimensions(null);
+    }
+    
+    setLightboxItem({ type, data: newData });
+    
+    // Load new image dimensions
+    if (type === 'design' || type === 'photo') {
+      const img = new window.Image();
+      img.onload = () => {
+        setImageDimensions({ width: img.width, height: img.height });
+      };
+      img.src = `/images/${newData.image}`;
+    }
   };
 
   const getYouTubeVideoId = (url: string) => {
@@ -153,7 +182,7 @@ export default function Home() {
                   size="lg" 
                   variant="outline" 
                   onClick={() => scrollToSection('about')}
-                  className="relative bg-background hover:bg-background/90 border-none transition-none"
+                  className="relative bg-background"
                 >
                   Contact
                 </Button>
@@ -175,47 +204,78 @@ export default function Home() {
             {(() => {
               const highlights = websitesData.filter(project => project.highlight === "oui");
               return highlights.length > 0 ? (
-                <div className="mt-6 md:mt-8 flex gap-3 md:gap-4 justify-start md:justify-center max-w-4xl overflow-x-auto pb-2">
-                  {highlights.map((project, index) => (
-                    <Card 
-                      key={`highlight-${index}`} 
-                      className={`w-[180px] md:w-[211px] flex-shrink-0 cursor-pointer py-0 gap-1 ${project.title === "GitHub" ? "bg-transparent" : ""}`}
-                      onClick={() => window.open(project.link, '_blank')}
-                    >
-                      <CardContent className="p-2">
-                        <div className={`relative w-full ${project.title === "GitHub" ? "h-[200px]" : "aspect-[4/3]"} rounded-lg overflow-hidden mb-2`}>
-                          <Image
-                            src={`/images/${project.image}`}
-                            alt={`Projet ${index + 1} - ${project.category}`}
-                            fill
-                            className="object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                            <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
-                              Voir
-                            </Button>
+                <>
+                  <div className="mt-6 md:mt-8 flex gap-3 md:gap-4 justify-start md:justify-center max-w-4xl overflow-x-auto pb-2">
+                    {highlights.map((project, index) => (
+                      <Card 
+                        key={`highlight-${index}`} 
+                        className={`w-[180px] md:w-[211px] flex-shrink-0 cursor-pointer py-0 gap-1 hover:bg-[#1c1c1c] hover:border-white/20 transition-colors ${project.title === "GitHub" ? "bg-transparent" : ""}`}
+                        onClick={() => window.open(project.link, '_blank')}
+                      >
+                        <CardContent className="p-2">
+                          <div className={`relative w-full ${project.title === "GitHub" ? "h-[200px]" : "aspect-[4/3]"} rounded-lg overflow-hidden mb-2`}>
+                            <Image
+                              src={`/images/${project.image}`}
+                              alt={`Projet ${index + 1} - ${project.category}`}
+                              fill
+                              className="object-cover"
+                            />
                           </div>
-                        </div>
-                        <div className="pl-2 gap-2 flex flex-col">
-                          <h3 className="text-sm font-semibold">{project.title}</h3>
-                          <p className="text-xs text-muted-foreground mb-2">{project.description}</p>
-                        </div>
-                      </CardContent>
-                      <CardFooter className="pt-0 pl-3 mb-4">
-                        <div className="flex flex-wrap gap-1 w-full">
-                          {project.technologies.map((tech, techIndex) => (
-                            <span
-                              key={techIndex}
-                              className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border border-input bg-transparent text-foreground"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
+                          <div className="pl-2 gap-2 flex flex-col">
+                            <h3 className="text-sm font-semibold">{project.title}</h3>
+                            <p className="text-xs text-muted-foreground mb-2">{project.description}</p>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="pt-0 pl-3 mb-4 flex flex-col gap-2">
+                          <div className="flex flex-wrap gap-1 w-full">
+                            {project.technologies.map((tech, techIndex) => (
+                              <span
+                                key={techIndex}
+                                className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border border-input bg-transparent text-foreground"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                          <Button 
+                            size="sm" 
+                            variant="default"
+                            className="self-start bg-[#00b9ff] h-6 border cursor-pointer text-white rounded-[6px] mt-1 hover:bg-[#00b9ff]/80"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(project.link, '_blank');
+                            }}
+                          >
+                            Voir
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                  {/* Flèche de défilement pour mobile */}
+                  <div className="flex justify-center mt-2 md:hidden">
+                    <div 
+                      className="mt-2"
+                      style={{
+                        animation: 'slideRight 1.5s ease-in-out infinite'
+                      }}
+                    >
+                      <style jsx>{`
+                        @keyframes slideRight {
+                          0%, 100% { transform: translateX(0px); }
+                          50% { transform: translateX(8px); }
+                        }
+                      `}</style>
+                      <Image
+                        src="/arrow.svg"
+                        alt="Défiler horizontalement"
+                        width={24}
+                        height={24}
+                        className=""
+                      />
+                    </div>
+                  </div>
+                </>
               ) : null;
             })()}
             
@@ -248,11 +308,11 @@ export default function Home() {
               {(() => {
                 const others = filteredWebsites.filter(project => project.highlight !== "oui");
                 return others.length > 0 ? (
-                  <div className="grid max-w-4xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
+                  <div className="grid max-w-4xl grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
                     {others.map((project, index) => (
                       <Card 
                         key={`other-${index}`} 
-                        className="w-full aspect-[4/3] p-2 cursor-pointer gap-2"
+                        className="w-full aspect-[4/3] p-2 cursor-pointer gap-2 hover:bg-[#1c1c1c] hover:border-white/20 transition-colors"
                         onClick={() => window.open(project.link, '_blank')}
                       >
                         <CardContent className="p-0 h-full">
@@ -263,14 +323,9 @@ export default function Home() {
                               fill
                               className="object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                              <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
-                                Voir
-                              </Button>
-                            </div>
                           </div>
                         </CardContent>
-                        <CardFooter className="p-2 pt-0 mt-2 pb-1">
+                        <CardFooter className="p-0 pt-0 mt-2 pb-1">
                           <div className="flex flex-wrap gap-1 w-full">
                             {project.technologies.map((tech, techIndex) => (
                               <span
@@ -337,7 +392,7 @@ export default function Home() {
               {filteredDesigns.map((design, index) => (
                 <Card 
                   key={index} 
-                  className="w-full aspect-square p-2 cursor-pointer"
+                  className="w-full aspect-square p-2 cursor-pointer hover:bg-[#1c1c1c] hover:border-white/20 transition-colors"
                   onClick={() => openLightbox('design', design)}
                 >
                   <CardContent className="p-0 h-full">
@@ -348,11 +403,6 @@ export default function Home() {
                         fill
                         className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                        <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
-                          Voir
-                        </Button>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -414,7 +464,7 @@ export default function Home() {
               {filteredVideos.map((video, index) => (
                 <Card 
                   key={index} 
-                  className="w-full aspect-[4/3] p-2 cursor-pointer"
+                  className="w-full aspect-[4/3] p-2 cursor-pointer hover:bg-[#1c1c1c] hover:border-white/20 transition-colors"
                   onClick={() => openLightbox('video', video)}
                 >
                   <CardContent className="p-0 h-full">
@@ -425,11 +475,6 @@ export default function Home() {
                         fill
                         className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                        <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
-                          Voir
-                        </Button>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -498,7 +543,7 @@ export default function Home() {
               {filteredPhotos.map((photo, index) => (
                 <Card 
                   key={index} 
-                  className="w-full aspect-square p-2 cursor-pointer"
+                  className="w-full aspect-square p-2 cursor-pointer hover:bg-[#1c1c1c] hover:border-white/20 transition-colors"
                   onClick={() => openLightbox('photo', photo)}
                 >
                   <CardContent className="p-0 h-full">
@@ -509,11 +554,6 @@ export default function Home() {
                         fill
                         className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                        <Button variant="outline" size="sm" className="bg-transparent border-white text-white hover:bg-white/20 text-xs cursor-pointer">
-                          Voir
-                        </Button>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -526,16 +566,15 @@ export default function Home() {
             {/* Section Biographie & Contact */}
       <section id="about" className="border-b md:border-l-2 md:border-r-2 border-border">
         <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
               
               {/* Colonne Gauche : Contenu (8/12) */}
               <div className="md:col-span-8 space-y-10">
                 <div>
-                  <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-8">Qui suis-je ?</h2>
-                  <div className="space-y-4 text-base md:text-lg text-muted-foreground leading-relaxed">
-                    <p className="font-semibold text-foreground">ReBonjour,</p>
+                  <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl mb-4">Qui suis-je ?</h2>
+                  <div className="space-y-4 text-base md:text-l text-muted-foreground leading-relaxed leading-7 md:leading-6">
                     <p>mon parcours rapidement :</p>
                     <p>
                       Après un Bac S, j'ai été diplômé d'un Bachelor Web effectué à Hétic. 
@@ -546,18 +585,18 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <h3 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Contact</h3>
-                  <p className="text-lg md:text-xl">
+                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl mb-4">Contact</h3>
+                  <p className="text-base md:text-lg">
                     <a href="mailto:t@tanguym.fr" className="text-foreground hover:text-[#009ae9] transition-colors">t@tanguym.fr</a>
                     <span className="mx-2 text-muted-foreground">ou</span>
-                    <a href="#" className="underline underline-offset-4 hover:text-[#009ae9] transition-colors">LinkedIn</a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/tanguy-mombert-a68b81159/" className="underline underline-offset-4 hover:text-[#009ae9] transition-colors">LinkedIn</a>
                   </p>
                 </div>
               </div>
 
               {/* Colonne Droite : Image (4/12) */}
               <div className="md:col-span-4 flex justify-center md:justify-end">
-                <div className="relative w-full aspect-square max-w-[300px] rounded-sm overflow-hidden border border-border">
+                <div className="relative w-full aspect-square max-w-[300px] rounded-sm overflow-hidden border-border">
                   <Image
                     src="/images/_DSC1998-copie-3.jpeg"
                     alt="Photo de profil"
@@ -578,62 +617,68 @@ export default function Home() {
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-2 md:p-4"
           onClick={closeLightbox}
         >
-          <div className="relative w-full max-w-4xl max-h-full flex items-center">
-            {/* Previous button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateLightbox('prev');
-              }}
-              className="absolute left-2 md:-left-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-3xl md:text-4xl font-bold z-10 bg-black/50 md:bg-transparent w-10 h-10 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
-            >
-              ‹
-            </button>
+          {/* Previous button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigateLightbox('prev');
+            }}
+            className="fixed left-2 md:left-8 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-3xl md:text-4xl font-bold z-10 bg-black/50 md:bg-transparent w-10 h-10 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
+          >
+            ‹
+          </button>
 
-            {/* Close button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-2 md:-top-12 right-2 md:right-0 text-white hover:text-gray-300 text-xl md:text-2xl font-bold z-10 bg-black/50 md:bg-transparent w-8 h-8 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
-            >
-              ✕
-            </button>
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            className="fixed top-2 md:top-8 right-2 md:right-8 text-white hover:text-gray-300 text-xl md:text-2xl font-bold z-10 bg-black/50 md:bg-transparent w-8 h-8 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
+          >
+            ✕
+          </button>
+
+          <div className={`relative w-full max-h-full flex items-center justify-center ${lightboxItem.type === 'video' ? 'max-w-4xl' : ''}`}>
+            {lightboxItem.type === 'video' && (
+              <div className="w-full md:w-[900px] aspect-video mx-auto">
+                <iframe
+                  src={getEmbedUrl(lightboxItem.data.url)}
+                  className="w-full h-full rounded-lg"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            )}
             
-            <div className="relative w-full w-full px-12 md:px-0">
-              {lightboxItem.type === 'video' && (
-                <div className="w-full md:w-[900px] aspect-video mx-auto">
-                  <iframe
-                    src={getEmbedUrl(lightboxItem.data.url)}
-                    className="w-full h-full rounded-lg"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              )}
-              
-              {(lightboxItem.type === 'design' || lightboxItem.type === 'photo') && (
-                <div className="relative w-full h-[70vh] md:h-[80vh]">
-                  <Image
-                    src={`/images/${lightboxItem.data.image}`}
-                    alt={`${lightboxItem.type} - ${lightboxItem.data.category}`}
-                    fill
-                    className="object-contain rounded-lg"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Next button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                navigateLightbox('next');
-              }}
-              className="absolute right-2 md:-right-[50px] top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-3xl md:text-4xl font-bold z-10 bg-black/50 md:bg-transparent w-10 h-10 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
-            >
-              ›
-            </button>
+            {(lightboxItem.type === 'design' || lightboxItem.type === 'photo') && imageDimensions && (
+              <div 
+                className="relative mx-auto rounded-lg overflow-hidden"
+                style={{
+                  maxWidth: 'min(calc(100vw - 120px), ' + imageDimensions.width + 'px)',
+                  maxHeight: 'min(calc(100vh - 80px), ' + imageDimensions.height + 'px)',
+                  width: imageDimensions.width + 'px',
+                  aspectRatio: `${imageDimensions.width} / ${imageDimensions.height}`
+                }}
+              >
+                <Image
+                  src={`/images/${lightboxItem.data.image}`}
+                  alt={`${lightboxItem.type} - ${lightboxItem.data.category}`}
+                  fill
+                  className="object-contain rounded-lg"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            )}
           </div>
+
+          {/* Next button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigateLightbox('next');
+            }}
+            className="fixed right-2 md:right-8 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 text-3xl md:text-4xl font-bold z-10 bg-black/50 md:bg-transparent w-10 h-10 md:w-auto md:h-auto rounded-full md:rounded-none flex items-center justify-center"
+          >
+            ›
+          </button>
         </div>
       )}
 

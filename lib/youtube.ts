@@ -40,13 +40,8 @@ export function getYouTubeThumbnail(url: string): string {
 
   const vimeoId = getVimeoVideoId(url);
   if (vimeoId) {
-    return `https://vumbnail.com/${vimeoId}.jpg`;
+    return `https://vumbnail.com/${vimeoId}.jpg?w=320&crop=top`;
   }
 
   return '';
-}
-
-export function getTechLogo(tech: string): string {
-  // Use local SVG files from public folder
-  return `/${tech.toLowerCase()}.svg`;
 }
