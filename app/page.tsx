@@ -138,6 +138,26 @@ export default function Home() {
               <Button size="lg" variant="outline" onClick={() => scrollToSection('photos')}>
                 Photos
               </Button>
+              <div className="relative group p-[1px] inline-flex items-center justify-center overflow-hidden rounded-md">
+                {/* La bordure avec tes couleurs, sans aucune transition parasite */}
+                <div 
+                  className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite]" 
+                  style={{ 
+                    backgroundImage: `conic-gradient(from 90deg at 50% 50%, #000 0%, #000 50%, #e2e8f062 100%)`,
+                    animationTimingFunction: 'linear',
+                    transition: 'none' // Désactive toute transition qui pourrait lisser le mouvement
+                  }}
+                />
+                {/* Le bouton */}
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  onClick={() => scrollToSection('about')}
+                  className="relative bg-background hover:bg-background/90 border-none transition-none"
+                >
+                  Contact
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -159,11 +179,11 @@ export default function Home() {
                   {highlights.map((project, index) => (
                     <Card 
                       key={`highlight-${index}`} 
-                      className="w-[180px] md:w-[211px] flex-shrink-0 cursor-pointer py-0 gap-1"
+                      className={`w-[180px] md:w-[211px] flex-shrink-0 cursor-pointer py-0 gap-1 ${project.title === "GitHub" ? "bg-transparent" : ""}`}
                       onClick={() => window.open(project.link, '_blank')}
                     >
                       <CardContent className="p-2">
-                        <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden mb-2">
+                        <div className={`relative w-full ${project.title === "GitHub" ? "h-[200px]" : "aspect-[4/3]"} rounded-lg overflow-hidden mb-2`}>
                           <Image
                             src={`/images/${project.image}`}
                             alt={`Projet ${index + 1} - ${project.category}`}
@@ -503,24 +523,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="border-b md:border-l-2 md:border-r-2 border-border">
+            {/* Section Biographie & Contact */}
+      <section id="about" className="border-b md:border-l-2 md:border-r-2 border-border">
         <div className="mx-auto w-full md:w-[1200px] md:border-l-2 md:border-r-2 border-border text-left py-12 md:py-24 px-4 section-border-animate">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:sm:text-4xl">Contact</h2>
-            <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground">
-              N'hésitez pas à me contacter pour discuter de vos projets.
-            </p>
-            <div className="mt-8 space-y-4">
-              <p className="text-muted-foreground">
-                Email: votre.email@example.com
-              </p>
-              <p className="text-muted-foreground">
-                Téléphone: +33 1 23 45 67 89
-              </p>
-              <p className="text-muted-foreground">
-                LinkedIn: linkedin.com/in/votreprofil
-              </p>
+          <div className="max-w-5xl mx-auto">
+            
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+              
+              {/* Colonne Gauche : Contenu (8/12) */}
+              <div className="md:col-span-8 space-y-10">
+                <div>
+                  <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-8">Qui suis-je ?</h2>
+                  <div className="space-y-4 text-base md:text-lg text-muted-foreground leading-relaxed">
+                    <p className="font-semibold text-foreground">ReBonjour,</p>
+                    <p>mon parcours rapidement :</p>
+                    <p>
+                      Après un Bac S, j'ai été diplômé d'un Bachelor Web effectué à Hétic. 
+                      J'ai travaillé pendant presque 5 ans dans un groupe du CAC 40 et aujourd'hui, 
+                      je suis freelance en création de sites web, graphisme, vidéo, photo depuis 3 ans.
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Contact</h3>
+                  <p className="text-lg md:text-xl">
+                    <a href="mailto:t@tanguym.fr" className="text-foreground hover:text-[#009ae9] transition-colors">t@tanguym.fr</a>
+                    <span className="mx-2 text-muted-foreground">ou</span>
+                    <a href="#" className="underline underline-offset-4 hover:text-[#009ae9] transition-colors">LinkedIn</a>
+                  </p>
+                </div>
+              </div>
+
+              {/* Colonne Droite : Image (4/12) */}
+              <div className="md:col-span-4 flex justify-center md:justify-end">
+                <div className="relative w-full aspect-square max-w-[300px] rounded-sm overflow-hidden border border-border">
+                  <Image
+                    src="/images/_DSC1998-copie-3.jpeg"
+                    alt="Photo de profil"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -595,7 +641,7 @@ export default function Home() {
       <footer className="border-t py-6 md:px-8 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <p className="text-left text-sm leading-loose text-muted-foreground">
-            © 2025 Portfolio. Tous droits réservés.
+            © 2026 TanguyM.fr. Tous droits réservés.
           </p>
         </div>
       </footer>
