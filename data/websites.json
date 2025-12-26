@@ -49,7 +49,9 @@
     "description": "",
     "link": "",
     "category": "",
-    "technologies": [],
+    "technologies": [
+      "WordPress"
+    ],
     "image": "cavanine.png",
     "highlight": "non"
   }
